@@ -1,0 +1,18 @@
+config:
+  target: '{{ $processEnvironment.TEST_TARGET }}'
+  environments:
+    staging:
+      target: 'https://staging.test.com'
+  tls:
+    rejectUnauthorized: false
+  phases:
+    - duration: 5
+      arrivalRate: 2
+scenarios:
+  - flow:
+    - log: 'test endpoint'
+    - get:
+        url: "/"
+        qs:
+          test: "true"
+        gzip: true

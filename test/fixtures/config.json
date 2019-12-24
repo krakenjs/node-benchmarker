@@ -1,0 +1,19 @@
+{
+  "tool": {
+    "module": {
+      "name": "path:./test/fixtures/test-tool"
+    }
+  },
+  "publishers": [
+    {
+      "module": {
+        "name": "path:./test/fixtures/test-publisher"
+      }
+    },
+    {
+      "module": {
+        "name": "path:./lib/publisher/console"
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+dist/
+build/
+out/
+.build/
+docs/
+typings/
+report/
+test/fixtures/

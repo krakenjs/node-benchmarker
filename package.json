@@ -1,0 +1,59 @@
+{
+  "name": "@krakenjs/benchmarker",
+  "version": "1.0.0",
+  "description": "Runs benchmarks and publishes results.",
+  "bin": {
+    "benchmarker": "./bin/benchmarker"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "cover": "nyc --reporter=lcov npm test && nyc report",
+    "coverage": "npm run cover",
+    "lint": "eslint ./lib/**/*.js test",
+    "pretest": "npm run lint",
+    "test": "mocha test --recursive --reporter=spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krakenjs/node-benchmarker"
+  },
+  "keywords": [
+    "benchmark",
+    "performance",
+    "load",
+    "test"
+  ],
+  "engines": {
+    "node": ">=8",
+    "npm": ">=6.9"
+  },
+  "author": "Sumeet Kakkar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/krakenjs/node-benchmarker/issues"
+  },
+  "homepage": "https://github.com/krakenjs/node-benchmarker#readme",
+  "dependencies": {
+    "commander": "^3.0.1",
+    "confit": "^2.3.0",
+    "debug": "^4.1.1",
+    "es5": "npm:@elastic/elasticsearch@^5.6.20",
+    "es6": "npm:@elastic/elasticsearch@^6.8.2",
+    "es7": "npm:@elastic/elasticsearch@^7.3.0",
+    "glob": "^7.1.4",
+    "mongoose": "^5.7.0",
+    "npm-path": "^2.0.4",
+    "shortstop": "^1.0.3",
+    "shortstop-handlers": "^1.0.1",
+    "shush": "^1.0.0",
+    "tmp-promise": "^2.0.2"
+  },
+  "devDependencies": {
+    "artillery": "^1.6.0-28",
+    "eslint": "^6.3.0",
+    "express": "^4.17.1",
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
+    "sinon": "^7.5.0"
+  }
+}

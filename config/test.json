@@ -1,0 +1,52 @@
+{
+  "benchmarker": {
+    "tool": {
+      "module": {
+         "name": "path:./test/fixtures/test-tool"
+      },
+      "args": [
+        "-e",
+        "testing"
+      ]
+    },
+    "publishers": [
+      {
+        "module": {
+          "name": "path:./lib/publisher/mongodb"
+        },
+        "connection": [
+          {
+            "uri": "mongodb://127.0.0.1:27017/benchmarks",
+            "model": "benchmarks",
+            "options": {
+              "useNewUrlParser": true,
+              "useUnifiedTopology": true
+            }
+          }
+        ]
+      },
+      {
+        "module": {
+          "name": "path:./lib/publisher/elasticsearch"
+        },
+        "connection": [
+          {
+            "esVersion": 7,
+            "indexNamePrefix": "benchmarks",
+            "clientOptions": {
+              "node": "http://localhost:9200",
+              "agent": {
+                "rejectUnauthorized": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "module": {
+          "name": "path:./lib/publisher/console"
+        }
+      }
+    ]
+  }
+}

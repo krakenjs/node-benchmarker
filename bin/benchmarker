@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const path = require('path');
+const glob = require('glob');
+const program = require('commander');
+const pkg = require('../package.json');
+const config = require('../lib/config');
+const settings = require('../lib/utils/settings');
+const utils = require('../lib/utils');
+
+program
+  .version(`v${pkg.version}`, '-v --version', 'output the version number')
+  .option('-d, --debug', 'output extra debugging', () => {
+    process.env.DEBUG = (process.env.DEBUG && `${process.env.DEBUG }, ` || '') + `benchmarker:*`;
+  })
+  .option('-n, --name <name>', 'Unique "name" for the run. This helps in comparing historic runs. This typically should be name of the application', settings.set.bind(null, 'name'))
+  .option('-t, --tag <tag>', 'Unique "tag" for the run. This helps in identiying a particular run. This can be app semver, build number or any friendly identifier', settings.set.bind(null, 'tag'))
+  .option('-c, --config <filepath>', 'custom config file. default: loaded from `config` directory', (filepath) => {
+    if (filepath) {
+      filepath = path.resolve(utils.getRootDir(), filepath);
+      config.set(filepath).catch((err) => {
+        console.error(`ERROR READING CONFIG: ${filepath}! `, err);
+        process.exit(1);
+      });
+    }
+  });
+
+glob.sync('./lib/commands/**/*.js', {cwd: path.join(__dirname, '..'), nodir: true, absolute: true}).forEach((module) => {
+  const cmd = require(module);
+  const name = path.basename(module, '.js');
+  program
+    .command(`${cmd.name||name} ${cmd.args||''}`)
+    .description(cmd.description)
+    .action(async function action() {
+      try {
+        await cmd.apply(program, arguments);
+      } catch (ex) {
+        // command object is the last argument. removing it
+        console.log(ex);
+        console.error(`ERROR EXECUTION COMMAND: ${cmd.name} ${(Array.from(arguments).slice(0,-1)).join(' ')}! `, ex);
+        process.exit(1);
+      }
+    });
+});
+  
+
+program.parse(process.argv);

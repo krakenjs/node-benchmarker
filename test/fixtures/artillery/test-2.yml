@@ -1,0 +1,15 @@
+config:
+  target: '{{ $processEnvironment.TEST_TARGET }}'
+  tls:
+    rejectUnauthorized: false
+  phases:
+    - duration: 10
+      arrivalRate: 5
+scenarios:
+  - flow:
+    - log: 'test 2 endpoint'
+    - get:
+        url: "/"
+        qs:
+          test: "true"
+        gzip: true

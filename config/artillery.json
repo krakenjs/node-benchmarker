@@ -1,0 +1,33 @@
+{
+  "benchmarker": {
+    "tool": {
+      "module": {
+        "name": "@krakenjs/benchmarker/lib/tool/artillery"
+      },
+      "args": [ "-e", "ci" ]
+    },
+    "publishers": [
+      {
+        "module": {
+          "name": "@krakenjs/benchmarker/lib/publisher/elasticsearch"
+        },
+        "connection": [
+          {
+            "esVersion": 6,
+            "clientOptions": {
+              "node": "http://localhost:9200", "esVersion": 7,
+              "agent": {
+                "rejectUnauthorized": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "module": {
+          "name": "@krakenjs/benchmarker/lib/publisher/console"
+        }
+      }
+    ]
+  }
+}

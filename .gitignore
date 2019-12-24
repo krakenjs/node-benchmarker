@@ -1,0 +1,55 @@
+# OS
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.orig
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+
+# node
+node_modules
+package-lock.json
+npm-debug.log
+
+# generated files
+coverage
+dist
+.gh-pages
+.eslintcache
+.build
+.nyc_output
+.temp
+
+# lockfiles (you can remove these if you want them).
+yarn.lock
+
+# IDEs and editors
+.project
+.classpath
+.idea
+.settings
+.vscode
+.settings
+.iml
+*.sublime-workspace
+*.sublime-project
+
+# local config
+.opt-in
+.opt-out
+
+# functional reports
+test-results.xml
+.tmp/
+ccaggregator/
+logs/
