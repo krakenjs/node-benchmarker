@@ -6,26 +6,29 @@ const Artillery = require('../lib/tool/artillery');
 const consolePublisher = new (require('../lib/publisher/console'))();
 const testTool = new (require('./fixtures/test-tool'))();
 const testPublisher = new (require('./fixtures/test-publisher'))();
+const { setBaseUrl } = require('./fixtures/common');
 
 describe('benchmarker', function () {
-  let server, target_url;
+  let server, target_url, restoreBaseUrl;
   before(function before(next) {
+    restoreBaseUrl = setBaseUrl();
     server = require('./fixtures/app').listen(function () {
       console.info(`app listening on port ${this.address().port}`);
       target_url = `http://127.0.0.1:${this.address().port}`;
-      process.env.TEST_TARGET = void 0;
+      delete process.env.TEST_TARGET;
       next();
     });
   });
 
   after(function after() {
+    if (restoreBaseUrl) restoreBaseUrl();
     if (server) {
       server.close();
     }
   });
 
   afterEach(() => {
-    process.env.TEST_TARGET = void 0;
+    delete process.env.TEST_TARGET;
   });
 
   function EventListener(benchmarker) {
@@ -114,11 +117,13 @@ describe('benchmarker', function () {
   });
 
   it('should support artillery and multiple publishers', async function () {
+    restoreBaseUrl = setBaseUrl(`${target_url}`);
     const tool = new Artillery();
     const publishers = [testPublisher, consolePublisher];
     await Promise.all(publishers.map(p => p.connect()));
     const benchmarker = new Benchmarker({tool, publishers});
-    process.env.TEST_TARGET = `${target_url}`;
+    // NOT NEEDED WITH BASE_URL
+    // process.env.TEST_TARGET = `${target_url}`;
     const eventListener = EventListener(benchmarker);
     try {
       await benchmarker.run(path.join(__dirname, 'fixtures/artillery/test.yml'));

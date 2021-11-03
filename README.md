@@ -130,12 +130,27 @@ There is no special configuration. The runs are controlled by [artillery scripts
   
 Artillery supports [environemts](https://artillery.io/docs/script-reference/#environments) and [dynamic values via environment variables](https://artillery.io/docs/script-reference/#using-dynamic-values-in-config), and they can be leveraged if additional configuration is needed.
 
+If env `NODE_ENV` is set, it is passed to the artillery as `environment` with `-e` option.
+
 Example configuration for dynamic `target` url:
 
 ```yml
   config:
-    target: '{{ $processEnvironment.APPLICATION_TARGET }}
+    target: 'http://localhost:8080'
+    environments:
+      stage:
+        target: 'https://testinstance.qa.company.com'
+      test:
+        target: '{{ $processEnvironment.APPLICATION_TARGET }}'
 ```
+
+`BASE_URL` environment variable is supported for overriding above behavior with custom `target` value (passed with `-t` option).
+
+Example
+```
+$ BASE_URL=https://testinstance2.qa.company.com benchmarker run "./benchmarks/**/*.yml" 
+```
+
 Note: `artillery` package should be either installed globally, or it should be a dev dependency in your `package.json`. 
 
 ### Configuration for [elasticsearch](https://www.elastic.co/webinars/getting-started-elasticsearch)
